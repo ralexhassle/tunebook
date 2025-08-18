@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -9,7 +13,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -18,28 +21,48 @@
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
-    
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    
     "baseUrl": ".",
     "paths": {
-      "@tunebook/shared-types": ["./packages/shared-types/src"],
-      "@tunebook/utils": ["./packages/utils/src"],
-      "@tunebook/data-processing": ["./packages/data-processing/src"],
-      "@tunebook/search-engine": ["./packages/search-engine/src"]
+      "@tunebook/shared-types": [
+        "./packages/shared-types/src"
+      ],
+      "@tunebook/utils": [
+        "./packages/utils/src"
+      ],
+      "@tunebook/data-processing": [
+        "./packages/data-processing/src"
+      ],
+      "@tunebook/search-engine": [
+        "./packages/search-engine/src"
+      ]
     }
   },
   "include": [],
   "references": [
-    { "path": "./apps/pwa" },
-    { "path": "./apps/api-server" },
-    { "path": "./apps/graphql-server" },
-    { "path": "./packages/shared-types" },
-    { "path": "./packages/utils" },
-    { "path": "./packages/data-processing" },
-    { "path": "./packages/search-engine" }
+    {
+      "path": "./apps/pwa"
+    },
+    {
+      "path": "./apps/api-server"
+    },
+    {
+      "path": "./apps/graphql-server"
+    },
+    {
+      "path": "./packages/shared-types"
+    },
+    {
+      "path": "./packages/utils"
+    },
+    {
+      "path": "./packages/data-processing"
+    },
+    {
+      "path": "./packages/search-engine"
+    }
   ]
 }

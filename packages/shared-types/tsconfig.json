@@ -12,6 +12,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "noEmit": false,
+    "composite": true,
+    "allowImportingTsExtensions": false,
 
     "strict": true,
     "noUnusedLocals": true,

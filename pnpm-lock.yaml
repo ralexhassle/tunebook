@@ -30,7 +30,43 @@ importers:
         specifier: ^5.1.6
         version: 5.9.2
 
+  apps/api-server:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
+  apps/graphql-server:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
+  apps/pwa:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
+  packages/data-processing:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
+  packages/search-engine:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
   packages/shared-types:
+    devDependencies:
+      typescript:
+        specifier: ^5.1.6
+        version: 5.9.2
+
+  packages/utils:
     devDependencies:
       typescript:
         specifier: ^5.1.6
