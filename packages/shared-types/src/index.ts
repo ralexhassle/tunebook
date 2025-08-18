@@ -7,6 +7,9 @@
 // Re-export all TheSession.org related types
 export * from './thesession';
 
+// Re-export real data-driven enums
+export * from './enums';
+
 // Re-export common types
 export * from './common';
 

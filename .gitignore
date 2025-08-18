@@ -108,6 +108,10 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
+# Downloaded data files
+data/
+*.json
+
 # Test results
 test-results/
 playwright-report/

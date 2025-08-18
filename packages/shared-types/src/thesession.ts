@@ -3,6 +3,9 @@
  * Based on data analysis from TheSession-data repository
  */
 
+// Import real enums from data analysis
+import { TuneType } from './enums';
+
 // ============================================================================
 // Core Entities
 // ============================================================================
@@ -20,9 +23,9 @@ export interface Tune {
   /** Type of tune (reel, jig, hornpipe, etc.) */
   type: TuneType;
   /** Musical meter (4/4, 6/8, 9/8, etc.) */
-  meter: string;
+  meter: string; // Keep as string since data has various formats
   /** Musical mode (Gmajor, Aminor, etc.) */
-  mode: string;
+  mode: string; // Keep as string since data has various formats
   /** ABC notation for the tune */
   abc: string;
   /** Date when this setting was added */
@@ -76,55 +79,11 @@ export interface TuneAlias {
 }
 
 // ============================================================================
-// Enums and Types
+// Enums and Types (imported from real data analysis)
 // ============================================================================
 
-/**
- * Types of traditional Irish music tunes
- */
-export enum TuneType {
-  REEL = 'reel',
-  JIG = 'jig',
-  SLIP_JIG = 'slip jig',
-  HORNPIPE = 'hornpipe',
-  POLKA = 'polka',
-  WALTZ = 'waltz',
-  MARCH = 'march',
-  AIR = 'air',
-  STRATHSPEY = 'strathspey',
-  SLIDE = 'slide',
-  MAZURKA = 'mazurka',
-  SCHOTTISCHE = 'schottische',
-  BARN_DANCE = 'barn dance',
-  SINGLE_JIG = 'single jig',
-  DOUBLE_JIG = 'double jig',
-  TREBLE_JIG = 'treble jig',
-}
-
-/**
- * Musical modes commonly used in Irish traditional music
- */
-export enum MusicalMode {
-  MAJOR = 'major',
-  MINOR = 'minor',
-  DORIAN = 'dorian',
-  MIXOLYDIAN = 'mixolydian',
-  AEOLIAN = 'aeolian',
-  IONIAN = 'ionian',
-}
-
-/**
- * Common musical keys in Irish traditional music
- */
-export enum MusicalKey {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
-  E = 'E',
-  F = 'F',
-  G = 'G',
-}
+// Re-export real enums from data analysis
+export { TuneType, Meter, MusicalMode } from './enums';
 
 // ============================================================================
 // Normalized/Processed Types
