@@ -1,0 +1,13 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'tools/*'
+
+# Shared dependencies that should be hoisted
+shared-workspace-lockfile: true
+
+# Prevent hoisting of these packages to avoid conflicts
+public-hoist-pattern:
+  - '*eslint*'
+  - '*prettier*'
+  - '*typescript*'
