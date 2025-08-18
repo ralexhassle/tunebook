@@ -2,46 +2,120 @@
 
 ## Introduction
 
-Tunebook est un monorepo d'exploration de ressources musicales irlandaises qui permet aux utilisateurs de découvrir, rechercher et analyser une vaste collection de morceaux, albums et informations musicales. Le projet utilise les données de TheSession (https://github.com/adactio/TheSession-data) et propose une architecture moderne avec pnpm, des services Node.js/Fastify, une PWA React/Vite, et une infrastructure dockerisée.
+Tunebook is a monorepo exploration platform for Irish music resources that provides tools for discovering, searching, and analyzing traditional Irish music data. The system will be built as a modern web application using a monorepo architecture with pnpm, featuring React TypeScript frontends, Node.js Fastify backends, and PostgreSQL databases, all containerized with Docker. The initial focus is on creating a Progressive Web App (PWA) that loads and normalizes music data from TheSession.org dataset, enabling fuzzy search, filtering, sorting, and cross-referencing of tunes, albums, and related entities.
 
 ## Requirements
 
 ### Requirement 1
 
-**User Story:** En tant que développeur, je veux un monorepo bien structuré avec pnpm, afin de pouvoir gérer efficacement plusieurs projets interconnectés.
+**User Story:** As a developer, I want a well-structured monorepo setup with pnpm, so that I can efficiently manage multiple related projects with shared dependencies and consistent tooling.
 
 #### Acceptance Criteria
 
-1. WHEN le projet est initialisé THEN le système SHALL utiliser pnpm comme gestionnaire de dépendances
-2. WHEN la structure est créée THEN le système SHALL organiser les projets en packages distincts (serveurs Node.js, PWA React, utilitaires partagés)
-3. WHEN les dépendances sont installées THEN le système SHALL permettre le partage de dépendances communes entre packages
-4. IF un framework de monorepo est nécessaire THEN le système SHALL évaluer et potentiellement intégrer des outils comme Bit
+1. WHEN the monorepo is initialized THEN the system SHALL use pnpm as the package manager with workspace configuration
+2. WHEN projects are added to the monorepo THEN the system SHALL support both Node.js Fastify servers and React TypeScript applications
+3. WHEN dependencies are managed THEN the system SHALL optimize shared dependencies across workspace packages
+4. WHEN the project structure is created THEN the system SHALL include proper TypeScript configuration for the entire workspace
 
 ### Requirement 2
 
-**User Story:** En tant que développeur, je veux des services Node.js avec Fastify, afin de créer rapidement des APIs performantes pour les données musicales.
+**User Story:** As a developer, I want containerized development environment setup, so that I can run PostgreSQL databases and Node.js servers consistently across different environments.
 
 #### Acceptance Criteria
 
-1. WHEN un service est créé THEN le système SHALL utiliser Fastify comme framework web
-2. WHEN les routes sont définies THEN le système SHALL supporter les opérations CRUD sur les entités musicales
-3. IF GraphQL est implémenté THEN le système SHALL fournir une couche GraphQL en plus des routes REST
-4. WHEN les services sont déployés THEN le système SHALL être dockerisés pour faciliter le déploiement
+1. WHEN Docker configuration is created THEN the system SHALL provide containerized PostgreSQL database setup
+2. WHEN services are containerized THEN the system SHALL support running multiple Node.js Fastify servers in containers
+3. WHEN the development environment is started THEN the system SHALL orchestrate all services using Docker Compose
+4. WHEN containers are configured THEN the system SHALL include proper networking and volume management
+5. WHEN alternative backends are considered THEN the system SHALL be compatible with modern BaaS platforms like Convex
 
 ### Requirement 3
 
-**User Story:** En tant que développeur, je veux une infrastructure dockerisée, afin de standardiser l'environnement de développement et de déploiement.
+**User Story:** As a user, I want a Progressive Web App for Irish music exploration, so that I can access the music database offline and have a native app-like experience.
 
 #### Acceptance Criteria
 
-1. WHEN l'infrastructure est configurée THEN le système SHALL inclure un conteneur PostgreSQL
-2. WHEN les services sont containerisés THEN le système SHALL dockeriser chaque service Node.js
-3. WHEN le développement commence THEN le système SHALL fournir un docker-compose pour l'environnement local
-4. WHEN les conteneurs sont lancés THEN le système SHALL permettre la communication entre services
+1. WHEN the PWA is built THEN the system SHALL use React TypeScript with Vite for optimal performance
+2. WHEN the PWA is accessed THEN the system SHALL work offline after initial data load
+3. WHEN the PWA is installed THEN the system SHALL provide native app-like experience on mobile and desktop
+4. WHEN data is loaded THEN the system SHALL cache music data locally for offline access
 
 ### Requirement 4
 
-**User Story:** En tant qu'utilisateur, je veux une PWA React performante, afin d'explorer les ressources musicales irlandaises de manière fluide et responsive.
+**User Story:** As a user, I want to load and normalize Irish music data from TheSession.org, so that I can work with clean, structured data for analysis and search.
+
+#### Acceptance Criteria
+
+1. WHEN data is fetched THEN the system SHALL load JSON data from TheSession.org GitHub repository
+2. WHEN data is processed THEN the system SHALL normalize tunes, albums, and related entities into consistent structures
+3. WHEN entities are processed THEN the system SHALL extract and standardize metadata (types, names, relationships)
+4. WHEN data processing occurs THEN the system SHALL use Web Workers to handle large datasets without blocking the UI
+
+### Requirement 5
+
+**User Story:** As a user, I want fuzzy search capabilities across music entities, so that I can find tunes and albums even with partial or approximate queries.
+
+#### Acceptance Criteria
+
+1. WHEN I search for content THEN the system SHALL provide fuzzy search on tune names, album names, and other text attributes
+2. WHEN search results are returned THEN the system SHALL rank results by relevance and similarity
+3. WHEN I type in the search box THEN the system SHALL provide real-time search suggestions
+4. WHEN search is performed THEN the system SHALL highlight matching text in results
+
+### Requirement 6
+
+**User Story:** As a user, I want to filter and sort music content by various criteria, so that I can discover music based on specific characteristics.
+
+#### Acceptance Criteria
+
+1. WHEN I apply filters THEN the system SHALL filter tunes by type (jig, reel, hornpipe, etc.)
+2. WHEN I sort content THEN the system SHALL sort by popularity, alphabetical order, or other relevant metrics
+3. WHEN filters are applied THEN the system SHALL maintain filter state and allow multiple simultaneous filters
+4. WHEN I clear filters THEN the system SHALL reset to show all available content
+
+### Requirement 7
+
+**User Story:** As a user, I want to cross-reference music data, so that I can find relationships between tunes, albums, and other entities.
+
+#### Acceptance Criteria
+
+1. WHEN I view a tune THEN the system SHALL show all albums containing that tune
+2. WHEN I view an album THEN the system SHALL show all tunes included in that album
+3. WHEN I explore relationships THEN the system SHALL provide navigation between related entities
+4. WHEN cross-references are displayed THEN the system SHALL show relationship strength or frequency
+
+### Requirement 8
+
+**User Story:** As a user, I want to see popularity rankings and statistics, so that I can discover the most popular or frequently played tunes.
+
+#### Acceptance Criteria
+
+1. WHEN popularity is calculated THEN the system SHALL rank tunes based on frequency across albums and sessions
+2. WHEN statistics are displayed THEN the system SHALL show play counts, album appearances, and other metrics
+3. WHEN I browse popular content THEN the system SHALL provide "most popular" and "trending" sections
+4. WHEN popularity data is shown THEN the system SHALL update rankings based on the latest data analysis
+
+### Requirement 9
+
+**User Story:** As a developer, I want GraphQL API capabilities, so that I can provide flexible data querying for future frontend applications.
+
+#### Acceptance Criteria
+
+1. WHEN GraphQL is implemented THEN the system SHALL provide a GraphQL endpoint for data queries
+2. WHEN queries are made THEN the system SHALL support complex filtering, sorting, and relationship queries
+3. WHEN the API is accessed THEN the system SHALL provide proper schema documentation and introspection
+4. WHEN GraphQL resolvers are implemented THEN the system SHALL efficiently handle nested queries and relationships
+
+### Requirement 10
+
+**User Story:** As a developer, I want comprehensive data analysis tools, so that I can extract insights and patterns from the Irish music dataset.
+
+#### Acceptance Criteria
+
+1. WHEN data is analyzed THEN the system SHALL extract entity types and their relationships automatically
+2. WHEN analysis is performed THEN the system SHALL identify patterns in tune types, popularity, and cross-references
+3. WHEN insights are generated THEN the system SHALL provide statistical summaries and data visualizations
+4. WHEN analysis runs THEN the system SHALL use background processing to avoid blocking user interactionsx une PWA React performante, afin d'explorer les ressources musicales irlandaises de manière fluide et responsive.
 
 #### Acceptance Criteria
 
