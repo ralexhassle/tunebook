@@ -3,5 +3,6 @@
  */
 
 export interface SearchEngineConfig {
-  // TODO: Define configuration interface
+  /** Name of the search index used for queries */
+  indexName: string;
 }

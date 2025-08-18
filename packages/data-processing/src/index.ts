@@ -1,7 +1,8 @@
 /**
  * @tunebook/data-processing
- * 
- * data-processing package for Tunebook monorepo
+ *
+ * Data-processing utilities for Tunebook monorepo
  */
 
 export * from './types';
+export * from './normalize';

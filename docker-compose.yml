@@ -32,6 +32,32 @@ services:
       timeout: 10s
       retries: 3
 
+  api:
+    build: ./apps/api-server
+    container_name: tunebook-api
+    environment:
+      - PORT=3000
+    depends_on:
+      - postgres
+
+  graphql:
+    build: ./apps/graphql-server
+    container_name: tunebook-graphql
+    environment:
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+
+  pwa:
+    build: ./apps/pwa
+    container_name: tunebook-pwa
+    environment:
+      - GRAPHQL_ENDPOINT=http://graphql:4000/graphql
+    depends_on:
+      - graphql
+
 volumes:
   postgres_data:
   redis_data:

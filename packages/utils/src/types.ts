@@ -3,5 +3,6 @@
  */
 
 export interface UtilsConfig {
-  // TODO: Define configuration interface
+  /** Logging level for utility helpers */
+  logLevel?: 'debug' | 'info' | 'warn' | 'error';
 }
