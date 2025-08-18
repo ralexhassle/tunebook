@@ -1,0 +1,21 @@
+{
+  "name": "@tunebook/data-processing",
+  "version": "0.1.0",
+  "description": "Utilities to transform session JSON into DB-ready records",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests\""
+  },
+  "files": ["dist", "src"],
+  "keywords": ["data", "processing", "irish-music"],
+  "author": "Tunebook",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
