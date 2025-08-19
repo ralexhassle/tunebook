@@ -1,0 +1,27 @@
+{
+  "name": "@tunebook/thesession-types",
+  "version": "0.1.0",
+  "description": "TypeScript types and data processing utilities for thesession.org data",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --outDir dist --declaration",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "dev": "ts-node src/scripts/process-data.ts",
+    "dev:watch": "nodemon --exec ts-node src/scripts/process-data.ts",
+    "execute": "ts-node",
+    "test": "ts-node src/scripts/test-package.ts",
+    "stats": "ts-node src/scripts/statistics.ts",
+    "validate": "ts-node src/scripts/validate-data.ts",
+    "search-demo": "ts-node src/scripts/search-engine.ts",
+    "html-report": "ts-node src/scripts/html-report-generator.ts",
+    "analyze": "ts-node src/scripts/analyze-enums.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
