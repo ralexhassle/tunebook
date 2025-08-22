@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r build",
-    "type-check": "pnpm -r type-check"
+    "type-check": "pnpm -r type-check",
+    "dev": "pnpm --filter irish-music-pwa dev",
+    "dev:irish": "pnpm --filter irish-music-pwa dev"
   },
   "keywords": [
     "irish-music",
@@ -26,5 +28,11 @@
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@adobe/react-spectrum": "^3.43.0",
+    "@spectrum-icons/workflow": "^4.2.23",
+    "abcjs": "^6.5.1",
+    "react-aria-components": "^1.11.0"
   }
 }

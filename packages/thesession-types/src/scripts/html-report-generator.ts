@@ -46,6 +46,113 @@ export class HTMLReportGenerator {
     this.reportData = this.generateReportData();
   }
 
+  /**
+   * Calculate distribution statistics for a given data set
+   */
+  private calculateDistribution(
+    stats: Record<string, number>,
+    totalCount: number,
+    limit?: number
+  ): Array<{ name: string; count: number; percentage: number }> {
+    const entries = Object.entries(stats).sort(([, a], [, b]) => b - a);
+
+    if (limit) {
+      entries.splice(limit);
+    }
+
+    return entries.map(([name, count]) => ({
+      name,
+      count,
+      percentage: (count / totalCount) * 100,
+    }));
+  }
+
+  /**
+   * Extract popular tunes for each category
+   */
+  private extractPopularTunesByCategory(): ReportData['examples'] {
+    return {
+      popularReels: this.extractPopularTunesForType(TuneType.REEL),
+      popularJigs: this.extractPopularTunesForType(TuneType.JIG),
+      popularPolkas: this.extractPopularTunesForType(TuneType.POLKA),
+    };
+  }
+
+  /**
+   * Extract popular tunes for a specific type
+   */
+  private extractPopularTunesForType(type: TuneType, limit: number = 10) {
+    return this.searchEngine.getPopularByType(type, limit).map((tune) => ({
+      name: tune.name,
+      mode: tune.mode,
+      username: tune.username,
+    }));
+  }
+
+  /**
+   * Generate business insights from the data
+   */
+  private generateBusinessInsights(
+    typeDistribution: Array<{
+      name: string;
+      count: number;
+      percentage: number;
+    }>,
+    modeDistribution: Array<{
+      name: string;
+      count: number;
+      percentage: number;
+    }>,
+    meterDistribution: Array<{
+      name: string;
+      count: number;
+      percentage: number;
+    }>
+  ): string[] {
+    const insights = [];
+
+    // Dominance analysis
+    const topType = typeDistribution[0];
+    const secondType = typeDistribution[1];
+    insights.push(
+      `${this.capitalizeFirst(topType.name)}s dominate the repertoire with ${topType.percentage.toFixed(1)}% of all tunes.`
+    );
+
+    // Combined dominance
+    const combinedPercentage = topType.percentage + secondType.percentage;
+    insights.push(
+      `The top two tune types (${topType.name} and ${secondType.name}) account for ${combinedPercentage.toFixed(1)}% of the collection.`
+    );
+
+    // Key preferences
+    const topMode = modeDistribution[0];
+    const secondMode = modeDistribution[1];
+    const combinedModePercentage = topMode.percentage + secondMode.percentage;
+    insights.push(
+      `${topMode.name} and ${secondMode.name} are the most popular keys, representing ${combinedModePercentage.toFixed(1)}% of all tunes.`
+    );
+
+    // Time signature analysis
+    const topMeter = meterDistribution[0];
+    insights.push(
+      `${topMeter.percentage.toFixed(1)}% of tunes are in ${topMeter.name} time signature.`
+    );
+
+    // Diversity insight
+    insights.push(
+      `The collection shows remarkable diversity with ${getAllTuneTypes().length} distinct tune types, ${getAllTuneModes().length} musical modes, and ${getAllTimeSignatures().length} time signatures.`
+    );
+
+    return insights;
+  }
+
+  /**
+   * Utility function to capitalize first letter
+   */
+  private capitalizeFirst(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   private generateReportData(): ReportData {
     const tunes = readTunesData();
     const stats = this.searchEngine.getStats();
