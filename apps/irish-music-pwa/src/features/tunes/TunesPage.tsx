@@ -1,9 +1,8 @@
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { useIngestData, useClearData } from '../../hooks/useMusicData';
 import { FilterChips } from '../../components/FilterChips';
 import { TunesTable } from '../../components/TunesTable';
 import { Stats } from '../../components/Stats';
-import type { SearchFilters } from '../../lib/queryKeys';
 
 const styles = {
   container: {
@@ -86,8 +85,7 @@ const styles = {
 };
 
 function TunesContent() {
-  const [query, setQuery] = useState('');
-  const [filters, setFilters] = useState<SearchFilters>({});
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   const ingestMutation = useIngestData();
   const clearMutation = useClearData();
@@ -98,7 +96,7 @@ function TunesContent() {
       await ingestMutation.mutateAsync({
         urls: [
           '/data/tunes.json',
-          '/data/aliases.json', 
+          '/data/aliases.json',
           '/data/tune_popularity.json',
           '/data/recordings.json',
         ],
@@ -138,24 +136,30 @@ function TunesContent() {
         <p style={styles.subtitle}>
           Explorez la collection complète avec partitions ABC et recherche floue
         </p>
-        
+
         <div style={styles.actions}>
           <button
             onClick={handleIngestRealData}
             disabled={ingestMutation.isPending}
             style={{
               ...styles.button,
-              ...(ingestMutation.isPending ? styles.disabledButton : styles.primaryButton)
+              ...(ingestMutation.isPending
+                ? styles.disabledButton
+                : styles.primaryButton),
             }}
           >
-            {ingestMutation.isPending ? 'Chargement...' : 'Charger vraies données'}
+            {ingestMutation.isPending
+              ? 'Chargement...'
+              : 'Charger vraies données'}
           </button>
           <button
             onClick={handleIngestDemo}
             disabled={ingestMutation.isPending}
             style={{
               ...styles.button,
-              ...(ingestMutation.isPending ? styles.disabledButton : styles.primaryButton)
+              ...(ingestMutation.isPending
+                ? styles.disabledButton
+                : styles.primaryButton),
             }}
           >
             {ingestMutation.isPending ? 'Chargement...' : 'Données démo'}
@@ -165,7 +169,9 @@ function TunesContent() {
             disabled={clearMutation.isPending}
             style={{
               ...styles.button,
-              ...(clearMutation.isPending ? styles.disabledButton : styles.dangerButton)
+              ...(clearMutation.isPending
+                ? styles.disabledButton
+                : styles.dangerButton),
             }}
           >
             {clearMutation.isPending ? 'Nettoyage...' : 'Vider'}
@@ -173,39 +179,18 @@ function TunesContent() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats flottantes */}
       <Stats />
 
-      {/* Recherche principale */}
-      <div style={styles.searchContainer}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Recherche globale par titre, alias..."
-          style={styles.searchInput}
-        />
-      </div>
-
       {/* Filtres */}
-      <FilterChips filters={filters} onChange={setFilters} />
+      <FilterChips selectedTypes={selectedTypes} onChange={setSelectedTypes} />
 
       {/* Tableau principal */}
-              <TunesTable filters={filters} />
+      <TunesTable filters={{ types: selectedTypes }} />
     </div>
   );
 }
 
 export function TunesPage() {
-  return (
-    <Suspense
-      fallback={
-        <div style={styles.loading}>
-          Chargement de l'application...
-        </div>
-      }
-    >
-      <TunesContent />
-    </Suspense>
-  );
+  return <TunesContent />;
 }

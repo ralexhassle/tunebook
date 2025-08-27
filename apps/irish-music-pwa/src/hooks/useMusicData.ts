@@ -46,7 +46,7 @@ export function useListTunesWithPagination(
 // Hook pour obtenir des statistiques
 export function useMusicStats() {
   return useQuery({
-    queryKey: ['musicStats'],
+    queryKey: [...musicQueryKeys.all, 'stats'],
     queryFn: async () => {
       const api = await getWorkerAPI();
       const allTunes = await api.listTunes();

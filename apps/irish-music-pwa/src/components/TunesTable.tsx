@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import { Table, TableHeader, TableBody, Row, Column, Cell, Button, TextField } from 'react-aria-components';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  Row,
+  Column,
+  Cell,
+  Button,
+  TextField,
+} from 'react-aria-components';
 import { AbcNotation } from './AbcNotation';
 import { useListTunesWithPagination } from '../hooks/useMusicData';
-import type { TuneType } from '../worker/types';
 
 const styles = {
   container: {
@@ -87,42 +95,47 @@ const styles = {
   },
 };
 
-export function TunesTable({ filters }: { filters: { types?: string[] } }) {
+export function TunesTable({ filters }: { filters: { types: string[] } }) {
   const [page, setPage] = useState(0);
-  const [localSearch, setLocalSearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 25;
 
-  // Convertir le filtre de types en un seul type pour l'API
-  const selectedType = filters.types && filters.types.length > 0 
-    ? filters.types[0] as TuneType 
-    : undefined;
-
   const listQuery = useListTunesWithPagination({
-    type: selectedType,
     offset: page * pageSize,
     limit: pageSize,
   });
 
   // Pour l'instant, utilisons seulement la liste paginée
-  const { tunes, total, isLoading } = {
+  const { tunes, isLoading } = {
     tunes: listQuery.data?.tunes || [],
-    total: listQuery.data?.total || 0,
-    isLoading: listQuery.isLoading
+    isLoading: listQuery.isLoading,
   };
 
-  // Filtrage local additionnel si recherche locale
-  const filteredTunes = localSearch.trim()
-    ? tunes.filter(
-        (tune) =>
-          tune.title.toLowerCase().includes(localSearch.toLowerCase()) ||
-          (tune.abc &&
-            extractNotes(tune.abc)
-              .toLowerCase()
-              .includes(localSearch.toLowerCase()))
-      )
-    : tunes;
+  // Filtrage local pour les types multiples et la recherche
+  const filteredTunes = tunes.filter((tune) => {
+    // Filtrer par types sélectionnés
+    if (filters.types.length > 0 && !filters.types.includes(tune.type)) {
+      return false;
+    }
 
-  const totalPages = Math.ceil(total / pageSize);
+    // Filtrer par recherche locale
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      return (
+        tune.title.toLowerCase().includes(query) ||
+        (tune.abc && extractNotes(tune.abc).toLowerCase().includes(query)) ||
+        tune.type.toLowerCase().includes(query)
+      );
+    }
+
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredTunes.length / pageSize);
+  const displayedTunes = filteredTunes.slice(
+    page * pageSize,
+    (page + 1) * pageSize
+  );
 
   // Fonction pour extraire les notes de l'ABC pour la recherche de séquences
   function extractNotes(abc: string): string {
@@ -146,12 +159,12 @@ export function TunesTable({ filters }: { filters: { types?: string[] } }) {
       {/* Recherche locale pour séquences de notes */}
       <div style={styles.searchContainer}>
         <TextField
-          value={localSearch}
-          onChange={setLocalSearch}
+          value={searchQuery}
+          onChange={setSearchQuery}
           style={styles.searchInput}
         >
           <input
-            placeholder="Rechercher par titre ou séquence de notes (ex: A B c d)..."
+            placeholder="Rechercher par titre, type ou notes (ex: A B c d)..."
             style={styles.searchInput}
           />
         </TextField>
@@ -175,7 +188,7 @@ export function TunesTable({ filters }: { filters: { types?: string[] } }) {
             </Column>
           </TableHeader>
           <TableBody>
-            {filteredTunes.map((tune) => (
+            {displayedTunes.map((tune) => (
               <Row key={tune.id}>
                 <Cell style={styles.cell}>
                   <div style={{ fontWeight: '600', marginBottom: '4px' }}>
@@ -254,7 +267,7 @@ export function TunesTable({ filters }: { filters: { types?: string[] } }) {
       {totalPages > 1 && (
         <div style={styles.pagination}>
           <div style={styles.pageInfo}>
-            Page {page + 1} sur {totalPages} ({total} mélodies)
+            Page {page + 1} sur {totalPages} ({filteredTunes.length} mélodies)
           </div>
 
           <div>
@@ -310,11 +323,18 @@ export function TunesTable({ filters }: { filters: { types?: string[] } }) {
       )}
 
       {/* Info sur la recherche locale */}
-      {localSearch.trim() && (
-        <div style={styles.pagination}>
-          <div style={styles.pageInfo}>
-            {filteredTunes.length} résultat(s) trouvé(s) pour "{localSearch}"
-          </div>
+      {searchQuery.trim() && (
+        <div
+          style={{
+            padding: '8px 16px',
+            background: '#f0f8ff',
+            borderRadius: '4px',
+            margin: '8px 0',
+          }}
+        >
+          <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
+            {filteredTunes.length} résultat(s) trouvé(s) pour "{searchQuery}"
+          </p>
         </div>
       )}
     </div>

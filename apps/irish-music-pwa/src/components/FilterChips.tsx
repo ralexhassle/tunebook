@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { Button, ToggleButton } from 'react-aria-components';
+import { ToggleButton } from 'react-aria-components';
 import { TuneType } from '../worker/types';
-import type { SearchFilters } from '../lib/queryKeys';
 
 interface FilterChipsProps {
-  filters: SearchFilters;
-  onChange: (filters: SearchFilters) => void;
+  selectedTypes: string[];
+  onChange: (types: string[]) => void;
 }
 
 const TUNE_TYPES = Object.values(TuneType);
@@ -16,9 +14,6 @@ const styles = {
     background: '#fafafa',
     borderRadius: '8px',
     marginBottom: '16px',
-  },
-  filterSection: {
-    marginBottom: '12px',
   },
   filterLabel: {
     display: 'block',
@@ -48,60 +43,33 @@ const styles = {
     color: 'white',
     borderColor: '#378ef0',
   },
-  chipMore: {
-    background: '#e3e3e3',
-    color: '#666',
-    borderColor: '#e3e3e3',
-  },
 };
 
-export function FilterChips({ filters, onChange }: FilterChipsProps) {
-  const [showAllTypes, setShowAllTypes] = useState(false);
-
-  const visibleTypes = showAllTypes ? TUNE_TYPES : TUNE_TYPES.slice(0, 6);
-
-  const toggleType = (type: TuneType) => {
-    const currentTypes = filters.type ? [filters.type] : [];
-    const newTypes = currentTypes.includes(type)
-      ? currentTypes.filter((t) => t !== type)
-      : [...currentTypes, type];
-
-    onChange({
-      ...filters,
-      type: newTypes.length === 1 ? newTypes[0] : undefined,
-    });
+export function FilterChips({ selectedTypes, onChange }: FilterChipsProps) {
+  const toggleType = (type: string) => {
+    const newTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type];
+    onChange(newTypes);
   };
 
   return (
     <div style={styles.filterChips}>
-      <div style={styles.filterSection}>
-        <label style={styles.filterLabel}>Types:</label>
-        <div style={styles.chipsContainer}>
-          {visibleTypes.map((type) => (
-            <ToggleButton
-              key={type}
-              isSelected={filters.type === type}
-              onPress={() => toggleType(type)}
-              style={{
-                ...styles.chip,
-                ...(filters.type === type ? styles.chipSelected : {}),
-              }}
-            >
-              {type}
-            </ToggleButton>
-          ))}
-          {TUNE_TYPES.length > 6 && (
-            <Button
-              onPress={() => setShowAllTypes(!showAllTypes)}
-              style={{
-                ...styles.chip,
-                ...styles.chipMore,
-              }}
-            >
-              {showAllTypes ? 'Moins' : `+${TUNE_TYPES.length - 6}`}
-            </Button>
-          )}
-        </div>
+      <label style={styles.filterLabel}>Types de mélodies:</label>
+      <div style={styles.chipsContainer}>
+        {TUNE_TYPES.map((type) => (
+          <ToggleButton
+            key={type}
+            isSelected={selectedTypes.includes(type)}
+            onPress={() => toggleType(type)}
+            style={{
+              ...styles.chip,
+              ...(selectedTypes.includes(type) ? styles.chipSelected : {}),
+            }}
+          >
+            {type}
+          </ToggleButton>
+        ))}
       </div>
     </div>
   );
